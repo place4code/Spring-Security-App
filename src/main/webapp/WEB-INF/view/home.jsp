@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,23 +14,28 @@
 </head>
 <body>
 
-
-
-
-
   <div class="container">
   <div class="row justify-content-center">
     <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-    <h1 class="display-4"> Hi!</h1>
-    <p>Welcome</p>
+    <h1 class="display-4"> <i class="fas fa-home"></i> Hi 
+    <security:authentication property="principal.username"/>
+    </h1>
+    <p>Welcome, you are <security:authentication property="principal.authorities"/></p>
 
-    
+<nav class="nav">
+<security:authorize access="hasRole('MANAGER')">
+  <a class="nav-link" href="${pageContext.request.contextPath}/leaders">Leaders</a>
+</security:authorize>
+<security:authorize access="hasRole('ADMIN')">
+  <a class="nav-link" href="${pageContext.request.contextPath}/systems">Systems</a>
+  </security:authorize>
+</nav>
+<hr>
 <form:form action="${pageContext.request.contextPath}/logout" method="POST">
   
-  <button type="submit" class="btn btn-outline-danger">Logout <i class="fas fa-sign-out-alt"></i></button>
+  <button type="submit" class="btn btn-sm btn-outline-danger">Logout <i class="fas fa-sign-out-alt"></i></button>
   
 </form:form>
-<img alt="shadow" src="resources/shadow2.png" width="100%"/>
     </div>
   </div>
   
